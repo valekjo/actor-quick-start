@@ -4,9 +4,10 @@ const {
     utils: { log },
 } = Apify;
 
-exports.getStartUrls = async () => {
+exports.getConfig = async () => {
     const input = await Apify.getInput();
-    return input.startUrls;
+    const { startUrls, proxyConfiguration } = input;
+    return { startUrls, proxyConfiguration };
 };
 
 function getByTestIdHierarchy($, testIds) {
@@ -24,6 +25,5 @@ exports.handleTodaysWeather = async ({ request, $ }) => {
     };
 
     log.debug('Pushing data to dataset.');
-    log.debug(results);
     await Apify.pushData(results);
 };

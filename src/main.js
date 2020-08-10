@@ -6,13 +6,15 @@ const {
 } = Apify;
 
 Apify.main(async () => {
-    log.info('Starting actor.');
-    const requestList = await Apify.openRequestList('start-urls', await tools.getStartUrls());
+    const { startUrls, proxyConfiguration } = await tools.getConfig();
+    const requestList = new Apify.RequestList({ sources: startUrls });
+    await requestList.initialize();
 
     log.debug('Setting up crawler.');
     const crawler = new Apify.CheerioCrawler({
         requestList,
         handlePageFunction: tools.handleTodaysWeather,
+        proxyConfiguration,
     });
 
     log.info('Starting the crawl.');
