@@ -1,27 +1,28 @@
-// This is the main Node.js source code file of your actor.
-// It is referenced from the "scripts" section of the package.json file,
-// so that it can be started by running "npm start".
-
-// Import Apify SDK. For more information, see https://sdk.apify.com/
+// main.js
 const Apify = require('apify');
+const tools = require('./tools');
+const {
+    utils: { log },
+} = Apify;
 
 Apify.main(async () => {
-    // Get input of the actor.
-    // If you'd like to have your input checked and have Apify display
-    // a user interface for it, add INPUT_SCHEMA.json file to your actor.
-    // For more information, see https://apify.com/docs/actor/input-schema
-    const input = await Apify.getInput();
-    console.log('Input:');
-    console.dir(input);
+    log.info('Starting actor.');
+    const requestList = await Apify.openRequestList('categories', await tools.getSources());
+    const requestQueue = await Apify.openRequestQueue();
+    const router = tools.createRouter({ requestQueue });
 
-    // Do something useful here...
+    log.debug('Setting up crawler.');
+    const crawler = new Apify.CheerioCrawler({
+        requestList,
+        requestQueue,
+        handlePageFunction: async context => {
+            const { request } = context;
+            log.info(`Processing ${request.url}`);
+            await router(request.userData.label, context);
+        },
+    });
 
-    // Save output
-    const output = {
-        receivedInput: input,
-        message: 'Hello sir!',
-    };
-    console.log('Output:');
-    console.dir(output);
-    await Apify.setValue('OUTPUT', output);
+    log.info('Starting the crawl.');
+    await crawler.run();
+    log.info('Actor finished.');
 });
