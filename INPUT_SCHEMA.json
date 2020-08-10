@@ -1,14 +1,33 @@
 {
-  "title": "Input schema for the hello_word actor.",
-  "type": "object",
-  "schemaVersion": 1,
-  "properties": {
-    "message": {
-      "title": "Message",
-      "type": "string",
-      "description": "Just enter your hello world message.",
-      "editor": "textfield"
-    }
-  },
-  "required": []
+    "title": "weather-scraper",
+    "description": "",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "startUrls": {
+            "title": "Start urls",
+            "description": "",
+            "default": [{ "url": "https://weather.com/en-US/weather/today/l/a29fd98118188e1bcd8684c8152b235597d0cb3e5009426bee910a937958a000" }],
+            "prefill": [{ "url": "https://weather.com/en-US/weather/today/l/a29fd98118188e1bcd8684c8152b235597d0cb3e5009426bee910a937958a000" }],
+            "example": [
+                { "url": "https://weather.com/en-US/weather/today/l/a29fd98118188e1bcd8684c8152b235597d0cb3e5009426bee910a937958a000" }
+            ],
+            "type": "array",
+            "uniqueItems": true,
+            "editor": "requestListSources"
+        },
+        "proxyConfiguration": {
+            "title": "Proxy configuration",
+            "type": "object",
+            "description": "Select proxies to be used by your actor.",
+            "example": {
+                "useApifyProxy": true
+            },
+            "prefill": {
+                "useApifyProxy": true
+            },
+            "editor": "proxy"
+        }
+    },
+    "required": ["startUrls", "proxyConfiguration"]
 }
