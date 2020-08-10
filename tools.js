@@ -1,6 +1,7 @@
 // tools.js
 const Apify = require('apify');
 const routes = require('./routes');
+
 const {
     utils: { log },
 } = Apify;
@@ -8,7 +9,7 @@ const {
 exports.getSources = async () => {
     log.debug('Getting sources.');
     const input = await Apify.getInput();
-    return input.map(category => ({
+    return input.map((category) => ({
         url: `https://apify.com/store?category=${category}`,
         userData: {
             label: 'CATEGORY',
@@ -16,8 +17,8 @@ exports.getSources = async () => {
     }));
 };
 
-exports.createRouter = globalContext => {
-    return async function(routeName, requestContext) {
+exports.createRouter = (globalContext) => {
+    return async function (routeName, requestContext) {
         const route = routes[routeName];
         if (!route) throw new Error(`No route for name: ${routeName}`);
         log.debug(`Invoking route: ${routeName}`);

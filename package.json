@@ -5,7 +5,10 @@
 	"dependencies": {
 		"apify": "^0.21.0"
 	},
-	"devDependencies": {},
+	"devDependencies": {
+		"@apify/eslint-config": "^0.1.0",
+		"eslint": "^7.6.0"
+	},
 	"scripts": {
 		"start": "node main.js",
 		"test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"

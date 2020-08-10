@@ -1,0 +1,8 @@
+{
+    "cSpell.words": [
+        "Apify"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
+}
